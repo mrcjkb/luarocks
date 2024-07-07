@@ -19,3 +19,5 @@
 /luarocks-admin
 /.luarocks
 /.luacheckcache
+/.luarc.json
+/result*
