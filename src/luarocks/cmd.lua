@@ -486,6 +486,8 @@ Enabling completion for Fish:
    parser:flag("--no-project", "Do not use project tree even if running from a project folder.")
    parser:flag("--force-lock", "Attempt to overwrite the lock for commands " ..
       "that require exclusive access, such as 'install'")
+   parser:flag("--ignore-lock", "Ignore any existing locks for commands " ..
+      "that require exclusive access, such as 'install.'")
    parser:flag("--verbose", "Display verbose output of commands executed.")
    parser:option("--timeout", "Timeout on network operations, in seconds.\n"..
       "0 means no timeout (wait forever). Default is "..
@@ -742,7 +744,7 @@ function cmd.run_command(description, commands, external_namespace, ...)
    local cmd_mod = cmd_modules[args.command]
 
    local lock
-   if cmd_mod.needs_lock and cmd_mod.needs_lock(args) then
+   if not args.ignore_lock and cmd_mod.needs_lock and cmd_mod.needs_lock(args) then
       local ok, err = fs.check_command_permissions(args)
       if not ok then
          die(err, cmd.errorcodes.PERMISSIONDENIED)

@@ -346,8 +346,15 @@ function tools.lock_access(dirname, force)
 end
 
 function tools.unlock_access(lock)
-   os.remove(lock.lockfile)
-   os.remove(lock.tempfile)
+   if not lock then
+      return
+   end
+   if lock.lockfile then
+      os.remove(lock.lockfile)
+   end
+   if lock.tempfile then
+      os.remove(lock.tempfile)
+   end
 end
 
 return tools
